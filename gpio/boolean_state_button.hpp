@@ -10,7 +10,6 @@ namespace halex {
 class BooleanStateButton : public Button{
 private:
     bool holdState;
-protected:
 public:
     using Button::Button;
     void update();
