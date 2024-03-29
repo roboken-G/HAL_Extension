@@ -41,11 +41,19 @@ void Button::update() {
 }
 
 bool Button::isPushed() {
-	return (lastState ^ state) & state;
+    if(lastState != state && state == true){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 bool Button::isReleased() {
-	return (lastState ^ state) & lastState;
+    if(lastState != state && state == false){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 bool Button::getState() {
