@@ -24,7 +24,7 @@ Button::Button(GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin) :
 
 void Button::update() {
 	lastRawState = rawState;
-	if(normalyState == GPIO_PIN_RESET) {
+	if(normalyState == GPIO_PinState::GPIO_PIN_RESET) {
 	    rawState = gpio.isSet();
 	}else {
 	    rawState = gpio.isReset();
