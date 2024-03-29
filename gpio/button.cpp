@@ -5,10 +5,10 @@
 namespace halex {
 
 Button::Button(GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin, GPIO_PinState normalyState, uint32_t chatteringTime) :
+        gpio(GPIO(GPIOx, GPIO_Pin)),
         normalyState(normalyState),
         chatteringTime(chatteringTime)
 {
-    gpio = GPIO(GPIOx, GPIO_Pin);
 }
 
 
