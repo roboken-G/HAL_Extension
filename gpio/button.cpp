@@ -24,17 +24,17 @@ Button::Button(GPIO_TypeDef * GPIOx, uint16_t GPIO_Pin) :
 
 void Button::update() {
 	lastRawState = rawState;
-	if(normalyState == GPIO_PinState::GPIO_PIN_RESET) {
+	if (normalyState == GPIO_PinState::GPIO_PIN_RESET) {
 	    rawState = gpio.isSet();
-	}else {
+	} else {
 	    rawState = gpio.isReset();
 	}
 
 	// チャタリング防止
-	if(lastRawState != rawState) {
+	if (lastRawState != rawState) {
 	    rawChangeTime = HAL_GetTick();
 	}
-	if( HAL_GetTick() - rawChangeTime >= chatteringTime ) {
+	if (chatteringTime <= (HAL_GetTick() - rawChangeTime)) {
 	    lastState = state;
 		state = rawState;
 	}
