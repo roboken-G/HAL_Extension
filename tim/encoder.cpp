@@ -28,12 +28,16 @@ void Encoder::stop() noexcept {
 
 int32_t Encoder::update() noexcept {
     lastRawCount = rawCount;
-    rawCount = htim->Instance->CNT;
-
-    int16_t diff = static_cast<int16_t>(rawCount - lastRawCount);
-
-    count += diff;
-    return count;
+    rawCount = __HAL_TIM_GET_COUNTER(htim);
+    int32_t lastCount = count;
+    count += rawCount - lastRawCount;
+    // カウンタは 0 ~ ARR の ARR + 1 通りの値を取るので、1 周で ARR + 1 進む
+    if (((int32_t) (lastRawCount - rawCount)) > ((int32_t) (__HAL_TIM_GET_AUTORELOAD(htim) / 2))) { // overflow
+        count += __HAL_TIM_GET_AUTORELOAD(htim) + 1;
+    } else if (((int32_t) (rawCount - lastRawCount)) > ((int32_t) (__HAL_TIM_GET_AUTORELOAD(htim) / 2))) { // underflow
+        count -= __HAL_TIM_GET_AUTORELOAD(htim) + 1;
+    }
+    return count - lastCount;
 }
 
 int32_t Encoder::getCount() const noexcept {
